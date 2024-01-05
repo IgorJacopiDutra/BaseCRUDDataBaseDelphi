@@ -12,8 +12,10 @@ type
    TfrmPrincipal = class(TForm)
       btnCliente: TButton;
     FDPhysFBDriverLink1: TFDPhysFBDriverLink;
+    btnUsuario: TButton;
       procedure btnClienteClick(Sender: TObject);
       procedure FormShow(Sender: TObject);
+    procedure btnUsuarioClick(Sender: TObject);
    private
     { Private declarations }
       procedure OpenCliente();
@@ -28,7 +30,7 @@ var
 implementation
 
 uses
-   uCliente;
+   uCliente, uUsuario;
 
 {$R *.dfm}
 
@@ -39,6 +41,17 @@ begin
       frmCliente.ShowModal;
    finally
       FreeAndNil(frmCliente);
+   end;
+
+end;
+
+procedure TfrmPrincipal.btnUsuarioClick(Sender: TObject);
+begin
+  frmUsuario := TfrmUsuario.Create(nil);
+   try
+      frmUsuario.ShowModal;
+   finally
+      FreeAndNil(frmUsuario);
    end;
 
 end;

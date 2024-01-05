@@ -7,3 +7,12 @@ telefone varchar(10),
 
 constraint "PK_CLIENTES" primary key (id)
 );
+
+
+create table usuarios(
+id integer not null,
+nome varchar(80) not null,
+telefone varchar(10),
+
+constraint "PK_USUARIOS" primary key (id)
+);

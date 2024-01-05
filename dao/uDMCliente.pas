@@ -7,8 +7,11 @@ uses
    FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
    FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Datasnap.DBClient,
    Datasnap.Provider, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-   uClienteModel;
+   uClienteModel, System.Rtti;
 
+type
+  ColumnAttribute = class(TCustomAttribute)
+  end;
 type
    TDMCliente = class(TDataModule)
       qrySearch: TFDQuery;
@@ -36,6 +39,7 @@ type
       StringField3: TStringField;
       StringField4: TStringField;
    private
+    function Update<T>(obj: T; out error: string): Boolean; overload;
     { Private declarations }
    public
     { Public declarations }
@@ -43,7 +47,7 @@ type
       procedure Search(value: string);
       procedure Load(cliente: TClienteModel; iId: integer);
       function Insert(cliente: TClienteModel; out error: string): Boolean;
-      function Update(cliente: TClienteModel; out error: string): Boolean;
+      function Update(cliente: TClienteModel; out error: string): Boolean; overload;
       function Delete(id: Integer; out error: string): Boolean;
    end;
 
@@ -175,6 +179,15 @@ begin
       end;
 
    end;
+end;
+function TDMCliente.Update<T>(obj: T; out error: string): Boolean;
+var
+  ctx: TRttiContext;
+  prop: TRttiProperty;
+  attr: TCustomAttribute;
+  propValue:TValue;
+begin
+
 end;
 
 end.

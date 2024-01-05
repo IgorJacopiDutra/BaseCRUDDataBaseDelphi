@@ -23,6 +23,15 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 0
     OnClick = btnClienteClick
   end
+  object btnUsuario: TButton
+    Left = 8
+    Top = 32
+    Width = 104
+    Height = 25
+    Caption = 'Usuario'
+    TabOrder = 1
+    OnClick = btnUsuarioClick
+  end
   object FDPhysFBDriverLink1: TFDPhysFBDriverLink
     Left = 56
     Top = 80

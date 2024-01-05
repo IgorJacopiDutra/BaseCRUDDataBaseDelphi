@@ -6,7 +6,12 @@ inherited frmCliente: TfrmCliente
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcMain: TPageControl
+    ActivePage = tsSearch
     inherited tsSearch: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 705
+      ExplicitHeight = 416
       inherited pnSearch: TPanel
         inherited pnSearchTop: TPanel
           inherited sbSearch: TSpeedButton
