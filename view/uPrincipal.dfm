@@ -23,4 +23,8 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 0
     OnClick = btnClienteClick
   end
+  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
+    Left = 56
+    Top = 80
+  end
 end

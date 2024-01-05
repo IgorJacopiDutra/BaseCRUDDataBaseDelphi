@@ -5,11 +5,13 @@ interface
 uses
    Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
    System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-   Vcl.StdCtrls, uDM;
+   Vcl.StdCtrls, uDM, FireDAC.Phys.FBDef, FireDAC.Stan.Intf, FireDAC.Phys,
+  FireDAC.Phys.IBBase, FireDAC.Phys.FB;
 
 type
    TfrmPrincipal = class(TForm)
       btnCliente: TButton;
+    FDPhysFBDriverLink1: TFDPhysFBDriverLink;
       procedure btnClienteClick(Sender: TObject);
       procedure FormShow(Sender: TObject);
    private
