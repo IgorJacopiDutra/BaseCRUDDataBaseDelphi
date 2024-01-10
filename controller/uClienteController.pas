@@ -10,8 +10,8 @@ type
    public
       constructor Create();
       destructor Destroy();
-      procedure Search(value: string);
-      procedure Load(cliente: TClienteModel; id: integer);
+      procedure Search(value: string; out sError: string);
+      procedure Load(cliente: TClienteModel; id: integer; out sError: string);
       function Insert(cliente: TClienteModel; out sError: string): Boolean;
       function Update(cliente: TClienteModel; out sError: string): Boolean;
       function Delete(id: Integer; out sError: string): Boolean;
@@ -47,14 +47,14 @@ begin
    result := DMCliente.Insert(cliente, sError);
 end;
 
-procedure TClienteController.Load(cliente: TClienteModel; id: integer);
+procedure TClienteController.Load(cliente: TClienteModel; id: integer; out sError: string);
 begin
-   DMCliente.Load(cliente, id);
+   DMCliente.Load(cliente, id, sError);
 end;
 
-procedure TClienteController.Search(value: string);
+procedure TClienteController.Search(value: string; out sError: string);
 begin
-   DMCliente.Search(value);
+   DMCliente.Search(value, sError);
 end;
 
 function TClienteController.Update(cliente: TClienteModel; out sError: string): Boolean;

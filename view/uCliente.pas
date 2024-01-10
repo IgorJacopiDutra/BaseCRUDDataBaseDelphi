@@ -10,11 +10,11 @@ uses
 
 type
    TfrmCliente = class(TfrmBase)
-    lbledtTelefone: TLabeledEdit;
-    cbTpDocumento: TComboBox;
-    lbledtDocumento: TLabeledEdit;
-    lbTpDocumento: TLabel;
-    lbledtNome: TLabeledEdit;
+      lbledtTelefone: TLabeledEdit;
+      cbTpDocumento: TComboBox;
+      lbledtDocumento: TLabeledEdit;
+      lbTpDocumento: TLabel;
+      lbledtNome: TLabeledEdit;
       procedure gdrListDblClick(Sender: TObject);
       procedure sbDetailClick(Sender: TObject);
       procedure sbSaveClick(Sender: TObject);
@@ -96,9 +96,10 @@ end;
 procedure TfrmCliente.Load;
 var
    ClienteID: Integer;
+   sError: string;
 begin
    ClienteID := dsSearch.dataset.FieldByName('ID').AsInteger;
-   oClienteController.Load(oCliente, ClienteID);
+   oClienteController.Load(oCliente, ClienteID, sError);
    if Assigned(oCliente) then
    begin
       lbledtCodigo.Text := oCliente.ID.ToString;
@@ -123,7 +124,7 @@ begin
          begin
             raise Exception.Create(sError);
          end;
-      oClienteController.Search(lbledtSearch.Text);
+      oClienteController.Search(lbledtSearch.Text, sError);
    end
    else
       raise Exception.Create('Não há registro para ser excluído');
@@ -175,6 +176,8 @@ begin
 end;
 
 procedure TfrmCliente.Gravar;
+var
+   sError: string;
 begin
    try
       case FOperation of
@@ -183,7 +186,7 @@ begin
          opAlter:
             toAlter;
       end;
-      oClienteController.Search(lbledtSearch.Text);
+      oClienteController.Search(lbledtSearch.Text, sError);
    except
       on E: Exception do
 
@@ -210,8 +213,10 @@ begin
 end;
 
 procedure TfrmCliente.Search;
+var
+   sError: string;
 begin
-   oClienteController.Search(lbledtSearch.Text);
+   oClienteController.Search(lbledtSearch.Text, sError);
 end;
 
 procedure TfrmCliente.toNew;
