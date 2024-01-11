@@ -28,7 +28,7 @@ type
     { Public declarations }
       clienteReq: TclienteReq;
       procedure Search(value: string; out error: string);
-      procedure Load(cliente: TClienteModel; iId: integer; out error: string);
+      procedure Load(out cliente: TClienteModel; iId: integer; out error: string);
       function Insert(cliente: TClienteModel; out error: string): Boolean;
       function Update(cliente: TClienteModel; out error: string): Boolean; overload;
       function Delete(id: Integer; out error: string): Boolean;
@@ -52,7 +52,7 @@ var
 begin
    clienteReq := TclienteReq.Create;
    try
-      clienteReq.Delete(id, error);
+      result := clienteReq.Delete(id, error);
    finally
       clienteReq.Free;
    end;
@@ -65,13 +65,13 @@ var
 begin
    clienteReq := TclienteReq.Create;
    try
-      clienteReq.Post(cliente, error);
+      result := clienteReq.Post(cliente, error);
    finally
       clienteReq.Free;
    end;
 end;
 
-procedure TDMCliente.Load(cliente: TClienteModel; iId: integer; out error: string);
+procedure TDMCliente.Load(out cliente: TClienteModel; iId: integer; out error: string);
 var
    clienteReq: TclienteReq;
    reqContent: TStringStream;
@@ -97,6 +97,11 @@ var
    clientes: TArray<TClienteModel>;
    i: Integer;
 begin
+   if cdsSearch.Active then
+      cdsSearch.Close;
+
+   cdsSearch.CreateDataSet;
+
    clienteReq := TclienteReq.Create;
    try
       clientes := clienteReq.Get(0, value, error);
@@ -113,9 +118,6 @@ begin
       FreeAndNil(clienteReq);
    end;
 
-   if cdsSearch.Active then
-      cdsSearch.Close;
-
    cdsSearch.Active := True;
 end;
 
@@ -126,7 +128,7 @@ var
 begin
    clienteReq := TclienteReq.Create;
    try
-      clienteReq.Put(cliente, error);
+      result := clienteReq.Put(cliente, error);
    finally
       clienteReq.Free;
    end;

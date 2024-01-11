@@ -21,7 +21,7 @@ const
    userServer = 'ADMIN';
    passServer = '123456';
    URL = 'http://LOCALHOST:8080/datasnap/rest/';
-   Resource = 'TUserControl/Cliente';
+   Resource = 'TClienteControl/Cliente';
 
 implementation
 
@@ -43,12 +43,13 @@ var
 begin
    validFiels();
 
-   if sError <> '' then
+   if sError = '' then
    begin
       endpoint := URL + Resource + '/' + id.ToString();
 
       try
          JsonArray := PerformHTTPRequest(endpoint, userServer, passServer, 'DELETE', sError);
+         result := sError = '';
       except
          on E: Exception do
          begin
@@ -65,7 +66,7 @@ var
    I, j: Integer;
    cli: TClienteModel;
    Clientes: TArray<TClienteModel>;
-   UserValue: TJSONValue;
+   clientesValue: TJSONValue;
 
    function validFiels(): Boolean;
    begin
@@ -78,10 +79,10 @@ begin
 
    try
       if iId.ToString() <> '' then
-         endpoint := endpoint + '?' + 'ID=' + iId.ToString();
+         endpoint := endpoint + '?' + 'id=' + iId.ToString();
 
       if search <> '' then
-         endpoint := endpoint + '?' + 'SEARCH=' + search;
+         endpoint := endpoint + '?' + 'search=' + search;
 
       JsonArray := PerformHTTPRequest(endpoint, userServer, passServer, 'GET', sError);
 
@@ -91,38 +92,39 @@ begin
 
          for I := 0 to JsonArray.Count - 1 do
          begin
-            UserValue := (JsonArray.Items[I] as TJSONObject).GetValue('user');
+            clientesValue := (JsonArray.Items[I] as TJSONObject).GetValue('cliente');
 
-            if Assigned(UserValue) then
+            if Assigned(clientesValue) then
             begin
-               if UserValue is TJSONArray then
+               if clientesValue is TJSONArray then
                begin
-                  if TJSONArray(UserValue).Count > 0 then
+                  if TJSONArray(clientesValue).Count > 0 then
                   begin
-                     for j := 0 to TJSONArray(UserValue).Count - 1 do
+                     SetLength(Clientes, TJSONArray(clientesValue).Count);
+                     for j := 0 to TJSONArray(clientesValue).Count - 1 do
                      begin
-                        cli := TJson.JsonToObject<TClienteModel>(TJSONArray(UserValue).Items[j].ToJSON);
+                        cli := TJson.JsonToObject<TClienteModel>(TJSONArray(clientesValue).Items[j].ToJSON);
                         Clientes[j] := cli;
                      end;
                   end
                   else
                   begin
-                     sError := 'Array "user" vazio.';
+                     sError := 'Array cliente vazio.';
                   end;
                end
-               else if UserValue is TJSONString then
+               else if clientesValue is TJSONString then
                begin
-                  sError := 'Valor de User como string: ' + (UserValue as TJSONString).Value;
+                  sError := 'Valor de cliente como string: ' + (clientesValue as TJSONString).Value;
                   Continue;
                end
                else
                begin
-                  sError := 'Valor inesperado para o campo "user".';
+                  sError := 'Valor inesperado para o campo cliente.';
                end;
             end
             else
             begin
-               sError := 'Campo "user" não encontrado.';
+               sError := 'Campo cliente não encontrado.';
             end;
          end;
       end;
@@ -188,7 +190,7 @@ begin
                   begin
                      if ResultValue.TryGetValue<string>('detalhe', Detalhe) then
                      begin
-                        sError := Detalhe;
+                        sError := '';
                      end
                      else
                      begin
@@ -236,7 +238,7 @@ begin
       sError := 'Informar o Nome';
    end;
 
-   if sError <> '' then
+   if sError = '' then
    begin
       endpoint := URL + Resource;
       RequestContent := TStringStream.Create('{"nome":"' + cliente.Nome + '","tpdocto":"' + cliente.TpDocto + '","docto":"' + cliente.Docto + '","telefone":"' + cliente.Telefone + '"}', TEncoding.UTF8);
